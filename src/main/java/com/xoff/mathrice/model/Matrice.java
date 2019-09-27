@@ -51,18 +51,31 @@ public class Matrice {
         assert (colmax == autre.rowmax);
 
         Matrice produit = new Matrice(rowmax, autre.colmax);
-         for (int i = 0; i < produit.rowmax; i++) {
+        for (int i = 0; i < produit.rowmax; i++) {
             for (int j = 0; j < produit.colmax; j++) {
                 // matrice 1 1 c'est le produit de la premiere ligne par les elements de la premiere colonne
-                int prod=0;
-                for (int k=0;k<colmax;k++){
-                    prod+=matrice[i][k]*autre.matrice[k][j];
+                int prod = 0;
+                for (int k = 0; k < colmax; k++) {
+                    prod += matrice[i][k] * autre.matrice[k][j];
                 }
-                
-                produit.matrice[i][j]=prod;
+
+                produit.matrice[i][j] = prod;
             }
-         }
+        }
         return produit;
+    }
+
+    /**
+     * multiply by scalar facteur
+     *
+     * @param facteur
+     */
+    public void mul(int facteur) {
+        for (int i = 0; i < rowmax; i++) {
+            for (int j = 0; j < colmax; j++) {
+                matrice[i][j] = matrice[i][j] * facteur;
+            }
+        }
     }
 
     /**
@@ -71,13 +84,50 @@ public class Matrice {
      * @return
      */
     public Matrice inverse() {
+
+        Matrice inverse = new Matrice(rowmax, colmax);
         // a: calcul du determinant !=0
+        int determinant = determinant();
+        assert (determinant != 0);
+
         // b: cofacteur
-        // b1: calcul de cofacteur
+        // b1: calcul de cofacteur  
+        for (int i = 0; i < rowmax; i++) {
+            for (int j = 0; j < colmax; j++) {
+                // sous matrice ne contenant pas i,j
+                Matrice sub = new Matrice(rowmax - 1, colmax - 1);
+                for (int k = 0; k < rowmax-1; k++) {
+                    if (k != i) {
+                        
+                        for (int l = 0; l < colmax-1; l++) {
+                            if (l != j) {
+                                
+                                sub.matrice[k][l] = matrice[i][j];
+                                
+                            }
+                        }
+                    }
+                }
+                System.out.println("sub:\n"+sub);
+               // System.out.println("det:"+i+"-"+j+":"+sub.determinant());
+                inverse.matrice[i][j] = sub.determinant();
+            }
+        }
+        System.out.println("etape 1:"+inverse);
+        inverse.mul(1 / determinant);
+        System.out.println("etape 2:"+inverse);
         // b2: on met le signe du cofacteur
+        int signe = 1;
+        for (int i = 0; i < rowmax; i++) {
+            for (int j = 0; j < colmax; j++) {
+
+                inverse.matrice[i][j] = inverse.matrice[i][j] * signe;
+                signe = -signe;
+            }
+        }
         // c: transposee
-        
-        return this;
+System.out.println("etape 3:"+inverse);
+        return inverse.transpose();
     }
 
     /**

@@ -13,13 +13,13 @@ public class Run {
         Matrice m1 = new Matrice(DIM, DIM);
         m1.alea();
         System.out.println("M1:\n"+m1);
-        System.out.println("Determinant:" + m1.determinant());
+ //       System.out.println("Determinant:" + m1.determinant());
       //  System.out.println("Tranposee:\n" + m1.transpose());
      //   System.out.println("Trace:" + m1.trace());
-        Matrice m2 = new Matrice(DIM, DIM);
-        m2.alea();
-        System.out.println("M2:\n"+m2);
-        System.out.println("Produit:\n" + m1.product(m2));
+      //  Matrice m2 = new Matrice(DIM, DIM);
+     //   m2.alea();
+     //   System.out.println("M2:\n"+m2);
+     //   System.out.println("Produit:\n" + m1.product(m2));
         
         System.out.println("Inverse:\n" + m1.inverse());
         /*
