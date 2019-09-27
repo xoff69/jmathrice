@@ -20,6 +20,8 @@ public class Run {
         m2.alea();
         System.out.println("M2:\n"+m2);
         System.out.println("Produit:\n" + m1.product(m2));
+        
+        System.out.println("Inverse:\n" + m1.inverse());
         /*
         
         -2 1 0 0 

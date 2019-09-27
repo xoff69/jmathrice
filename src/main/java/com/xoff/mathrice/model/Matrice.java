@@ -71,6 +71,12 @@ public class Matrice {
      * @return
      */
     public Matrice inverse() {
+        // a: calcul du determinant !=0
+        // b: cofacteur
+        // b1: calcul de cofacteur
+        // b2: on met le signe du cofacteur
+        // c: transposee
+        
         return this;
     }
 
