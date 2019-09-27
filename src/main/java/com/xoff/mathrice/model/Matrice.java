@@ -6,16 +6,14 @@ import java.util.Random;
 
 /**
  * @author xoffp
- * @description simple integer matrix
+ * @description double matrix
  */
 public class Matrice {
-
-    private static final int MODULO_MAX = 7;
 
     /**
      * la matrice
      */
-    private final int[][] matrice;
+    private final double[][] matrice;
     private int rowmax;
     private int colmax;
 
@@ -27,7 +25,7 @@ public class Matrice {
      */
     public Matrice(int rowmax, int colmax) {
 
-        matrice = new int[rowmax][colmax];
+        matrice = new double[rowmax][colmax];
         this.rowmax = rowmax;
         this.colmax = colmax;
     }
@@ -54,7 +52,7 @@ public class Matrice {
         for (int i = 0; i < produit.rowmax; i++) {
             for (int j = 0; j < produit.colmax; j++) {
                 // matrice 1 1 c'est le produit de la premiere ligne par les elements de la premiere colonne
-                int prod = 0;
+                double prod = 0;
                 for (int k = 0; k < colmax; k++) {
                     prod += matrice[i][k] * autre.matrice[k][j];
                 }
@@ -70,14 +68,22 @@ public class Matrice {
      *
      * @param facteur
      */
-    public void mul(int facteur) {
+    public void mul(double facteur) {
         for (int i = 0; i < rowmax; i++) {
             for (int j = 0; j < colmax; j++) {
                 matrice[i][j] = matrice[i][j] * facteur;
             }
         }
     }
-
+    public boolean isSymetrique(){
+        Matrice transposee=transpose();
+          for (int i = 0; i < rowmax; i++) {
+            for (int j = 0; j < colmax; j++) {
+                if (matrice[i][j] != transposee.matrice[i][j]) return false;
+            }
+        }
+          return true;
+    }
     /**
      * M^-1
      *
@@ -87,7 +93,7 @@ public class Matrice {
 
         Matrice inverse = new Matrice(rowmax, colmax);
         // a: calcul du determinant !=0
-        int determinant = determinant();
+        double determinant = determinant();
         assert (determinant != 0);
 
         // b: cofacteur
@@ -96,26 +102,28 @@ public class Matrice {
             for (int j = 0; j < colmax; j++) {
                 // sous matrice ne contenant pas i,j
                 Matrice sub = new Matrice(rowmax - 1, colmax - 1);
-                for (int k = 0; k < rowmax-1; k++) {
-                    if (k != i) {
-                        
-                        for (int l = 0; l < colmax-1; l++) {
-                            if (l != j) {
-                                
-                                sub.matrice[k][l] = matrice[i][j];
-                                
-                            }
+                int k = 0, l = 0;
+                for (int u = 0; u < rowmax; u++) {
+                    for (int v = 0; v < colmax; v++) {
+                        if (u != i && v != j) {
+                            //   System.out.println("("+i+","+j+")"+"("+u+","+v+")->k="+k+"-"+l);
+                            sub.matrice[k][l++] = matrice[u][v];
                         }
                     }
+                    if (u != i) {
+                        k++;
+                    }
+                    l = 0;
                 }
-                System.out.println("sub:\n"+sub);
-               // System.out.println("det:"+i+"-"+j+":"+sub.determinant());
+
+                //    System.out.println("sub:\n" + sub);
+                // System.out.println("det:"+i+"-"+j+":"+sub.determinant());
                 inverse.matrice[i][j] = sub.determinant();
             }
         }
-        System.out.println("etape 1:"+inverse);
+        //    System.out.println("etape 1\n:" + inverse);
         inverse.mul(1 / determinant);
-        System.out.println("etape 2:"+inverse);
+        //    System.out.println("etape 2:" + inverse);
         // b2: on met le signe du cofacteur
         int signe = 1;
         for (int i = 0; i < rowmax; i++) {
@@ -126,7 +134,7 @@ public class Matrice {
             }
         }
         // c: transposee
-System.out.println("etape 3:"+inverse);
+        //    System.out.println("etape 3:" + inverse);
         return inverse.transpose();
     }
 
@@ -150,9 +158,9 @@ System.out.println("etape 3:"+inverse);
      *
      * @return
      */
-    public int trace() {
+    public double trace() {
         assert (matricecarree());
-        int trace = 0;
+        double trace = 0;
         int i = 0;
         // on a rowmax=col
         while (i < rowmax) {
@@ -163,13 +171,13 @@ System.out.println("etape 3:"+inverse);
     }
 
     /**
-     * random fill the matrix modulo MODULO_MAX
+     * random fill the matrix
      */
     public void alea() {
         Random r = new Random();
         for (int i = 0; i < rowmax; i++) {
             for (int j = 0; j < colmax; j++) {
-                matrice[i][j] = r.nextInt() % MODULO_MAX;
+                matrice[i][j] = r.nextDouble() * 2.1;
             }
         }
     }
@@ -179,13 +187,13 @@ System.out.println("etape 3:"+inverse);
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < rowmax; i++) {
             for (int j = 0; j < colmax; j++) {
-                res.append(matrice[i][j]).append(" ");
-
+                // res.append(String.format("%.2f", matrice[i][j])).append(" ");
+                res.append((int) matrice[i][j]).append(" ");
             }
             res.append("\n");
         }
 
-        return res.toString();
+        return res.toString().replaceAll(",", ".");
     }
 
     /**
@@ -199,8 +207,7 @@ System.out.println("etape 3:"+inverse);
      * @param d
      * @return
      */
-    private int finaldeterminant(int a, int b, int c, int d) {
-        //   System.out.println(a+" "+b+"\n"+c+" "+d+"\n");
+    private double finaldeterminant(double a, double b, double c, double d) {
         return a * d - (b * c);
     }
 
@@ -212,7 +219,7 @@ System.out.println("etape 3:"+inverse);
      * @param colexclue list of excluse cols
      * @return
      */
-    private int determinant(int lig, int coldebut, int colfin, List<Integer> colexclues) {
+    private double determinant(int lig, int coldebut, int colfin, List<Integer> colexclues) {
         if (getRowmax() - lig == 2) {
             // on va trouver les deux colonnes restantes (non exclues)
             List<Integer> inc = new ArrayList();
@@ -224,14 +231,14 @@ System.out.println("etape 3:"+inverse);
             // inc size =2
             return finaldeterminant(matrice[lig][inc.get(0)], matrice[lig][inc.get(1)], matrice[lig + 1][inc.get(0)], matrice[lig + 1][inc.get(1)]);
         }
-        int signe = 1;
-        int determinant = 0;
+        double signe = 1;
+        double determinant = 0;
         for (int i = coldebut; i < colfin; i++) {
             if (!colexclues.contains(i)) {
                 List localList = new ArrayList();
                 localList.addAll(colexclues);
                 localList.add(i);
-                int loc = matrice[lig][i] * determinant(lig + 1, coldebut, colfin, localList);
+                double loc = matrice[lig][i] * determinant(lig + 1, coldebut, colfin, localList);
                 determinant = determinant + (loc * signe);
 
                 signe = -signe;
@@ -245,7 +252,7 @@ System.out.println("etape 3:"+inverse);
      *
      * @return
      */
-    public int determinant() {
+    public double determinant() {
         return determinant(0, 0, colmax, new ArrayList());
     }
 
