@@ -6,7 +6,7 @@ import java.util.Random;
 
 /**
  * @author xoffp
- * @description une matrice sur le type int premiere version que des entiers
+ * @description simple integer matrix
  */
 public class Matrice {
 
@@ -20,7 +20,7 @@ public class Matrice {
     private int colmax;
 
     /**
-     * le constructeur
+     * le constructor
      *
      * @param row
      * @param col
@@ -33,21 +33,38 @@ public class Matrice {
     }
 
     /**
-     * vrai si la matrice est carree
+     * true if matrix size is n*n
      *
      * @return
      */
     private boolean matricecarree() {
         return rowmax == colmax;
     }
-
-    public Matrice produit(Matrice autre) {
+    /**
+     * matrix product
+     * @param autre
+     * @return 
+     */
+    public Matrice product(Matrice autre) {
         //@TODO + condition du produit this.ligne=autre.col
         return autre;
     }
-
     /**
-     * calcule le trace de la matrice
+     * M^-1
+     * @return 
+     */
+    public Matrice inverse(){
+        return this;
+    }
+    /**
+     * tM
+     * @return 
+     */
+    public Matrice transpose(){
+        return this;
+    }
+    /**
+     * matrice trace
      *
      * @return
      */
@@ -64,7 +81,7 @@ public class Matrice {
     }
 
     /**
-     * remplit la matrice aleatoirement entier modulo 23
+     * random fill the matrix modulo MODULO_MAX
      */
     public void alea() {
         Random r = new Random();
@@ -110,33 +127,29 @@ public class Matrice {
      * @param lig
      * @param coldebut
      * @param colfin
-     * @param colexclue (-1 si on exclue rien)
+     * @param colexclue list of excluse cols
      * @return
      */
-    public int determinant(int lig, int coldebut, int colfin, List<Integer> colexclues) {
+    private int determinant(int lig, int coldebut, int colfin, List<Integer> colexclues) {
         if (getRowmax() - lig == 2) {
             // on va trouver les deux colonnes restantes (non exclues)
             List<Integer> inc = new ArrayList();
             for (int i = 0; i < colmax; i++) {
                 if (!colexclues.contains(i)) {
-                    //   System.out.println("reste:"+i);
                     inc.add(i);
                 }
             }
-            //     System.out.println("final:" + inc.size());
-
+            // inc size =2
             return finaldeterminant(matrice[lig][inc.get(0)], matrice[lig][inc.get(1)], matrice[lig + 1][inc.get(0)], matrice[lig + 1][inc.get(1)]);
         }
         int signe = 1;
         int determinant = 0;
         for (int i = coldebut; i < colfin; i++) {
-            //System.out.println("i="+i);
             if (!colexclues.contains(i)) {
                 List localList = new ArrayList();
                 localList.addAll(colexclues);
                 localList.add(i);
                 int loc = matrice[lig][i] * determinant(lig + 1, coldebut, colfin, localList);
-                //  System.out.println(i + "::ligne=" + lig + "-->" + loc + "-" + coldebut + "*" + colfin + "--ex:" + i);
                 determinant = determinant + (loc * signe);
 
                 signe = -signe;
@@ -144,7 +157,10 @@ public class Matrice {
         }
         return determinant;
     }
-
+    /**
+     * main call
+     * @return 
+     */
     public int determinant() {
         return determinant(0, 0, colmax, new ArrayList());
     }
