@@ -40,29 +40,55 @@ public class Matrice {
     private boolean matricecarree() {
         return rowmax == colmax;
     }
+
     /**
      * matrix product
+     *
      * @param autre
-     * @return 
+     * @return
      */
     public Matrice product(Matrice autre) {
-        //@TODO + condition du produit this.ligne=autre.col
-        return autre;
+        assert (colmax == autre.rowmax);
+
+        Matrice produit = new Matrice(rowmax, autre.colmax);
+         for (int i = 0; i < produit.rowmax; i++) {
+            for (int j = 0; j < produit.colmax; j++) {
+                // matrice 1 1 c'est le produit de la premiere ligne par les elements de la premiere colonne
+                int prod=0;
+                for (int k=0;k<colmax;k++){
+                    prod+=matrice[i][k]*autre.matrice[k][j];
+                }
+                
+                produit.matrice[i][j]=prod;
+            }
+         }
+        return produit;
     }
+
     /**
      * M^-1
-     * @return 
+     *
+     * @return
      */
-    public Matrice inverse(){
+    public Matrice inverse() {
         return this;
     }
+
     /**
      * tM
-     * @return 
+     *
+     * @return
      */
-    public Matrice transpose(){
-        return this;
+    public Matrice transpose() {
+        Matrice transposee = new Matrice(colmax, rowmax);
+        for (int i = 0; i < rowmax; i++) {
+            for (int j = 0; j < colmax; j++) {
+                transposee.matrice[j][i] = matrice[i][j];
+            }
+        }
+        return transposee;
     }
+
     /**
      * matrice trace
      *
@@ -157,9 +183,11 @@ public class Matrice {
         }
         return determinant;
     }
+
     /**
      * main call
-     * @return 
+     *
+     * @return
      */
     public int determinant() {
         return determinant(0, 0, colmax, new ArrayList());
