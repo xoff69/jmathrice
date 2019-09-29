@@ -1,4 +1,4 @@
-package com.xoff.mathrice.model;
+package com.xoff.jmathrice.model;
 
 import java.util.ArrayList;
 import java.util.List;

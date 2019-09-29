@@ -1,6 +1,6 @@
-package com.xoff.mathrice.run;
+package com.xoff.jmathrice.run;
 
-import com.xoff.mathrice.model.Matrice;
+import com.xoff.jmathrice.model.Matrice;
 
 /**
  * @author xoff
