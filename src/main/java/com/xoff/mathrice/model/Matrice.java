@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * @author xoffp
- * @description double matrix
+ * @author xoff
+ * @description int  matrix
  */
 public class Matrice {
 
