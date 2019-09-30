@@ -6,7 +6,7 @@ import java.util.Random;
 
 /**
  * @author xoff
- * @description int  matrix
+ * @description int matrix
  */
 public class Matrice {
 
@@ -75,14 +75,19 @@ public class Matrice {
             }
         }
     }
-    public boolean isSymetrique(){
-          for (int i = 0; i < rowmax; i++) {
+
+    public boolean isSymetrique() {
+        assert (matricecarree());
+        for (int i = 0; i < rowmax; i++) {
             for (int j = 0; j < colmax; j++) {
-                if (matrice[i][j] != matrice[j][i]) return false;
+                if (matrice[i][j] != matrice[j][i]) {
+                    return false;
+                }
             }
         }
-          return true;
+        return true;
     }
+
     /**
      * M^-1
      *
