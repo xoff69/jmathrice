@@ -76,10 +76,9 @@ public class Matrice {
         }
     }
     public boolean isSymetrique(){
-        Matrice transposee=transpose();
           for (int i = 0; i < rowmax; i++) {
             for (int j = 0; j < colmax; j++) {
-                if (matrice[i][j] != transposee.matrice[i][j]) return false;
+                if (matrice[i][j] != matrice[j][i]) return false;
             }
         }
           return true;
