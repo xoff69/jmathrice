@@ -4,6 +4,8 @@ java source to manipulate matrix of int
 - determinant
 - inverse
 
+@see https://github.com/xoff69/cmathrice
+
 Use
     java  run com.xoff.mathrice.run.Run
 
